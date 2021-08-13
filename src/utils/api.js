@@ -7,6 +7,10 @@ class CategoryBoardsAPI {
         return axios.get(CATEGORY_API_BASE_URL + "/" +category); 
     }
 
+    getPersonBlogDetail(name, idx){
+        
+    }
+
 }
 
 export default new CategoryBoardsAPI();

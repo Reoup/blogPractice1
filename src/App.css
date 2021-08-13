@@ -22,3 +22,29 @@
   bottom: 0;
   width: 100%;
 }
+
+.custom {
+  background-color: #FFF;
+  height:200px;
+  border: 1px solid;
+}
+
+.custom img{
+  margin-left: -13px;
+}
+
+.customHeight{
+height:200px;
+margin-top: 10px;
+}
+
+.col-sm-8 {
+  border-width: 1px 1px 1px 0px;
+  border-style: solid;
+}
+
+.under{
+  position:relative;
+  left:660px;
+  top:100px;
+}
