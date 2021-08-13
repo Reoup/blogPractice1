@@ -107,7 +107,7 @@ class CategoryListComponent extends Component {
         },
     ];
 
-    classes = UseStyles();
+
     
     constructor(props){
         super(props);
@@ -142,38 +142,39 @@ class CategoryListComponent extends Component {
         if(!this.state.categoryBoards.length)
             return <div></div>
             
-        console.log(this.classes);
+        const {classes} = this.props;
+        console.log(classes);
 
         return (
-            <div className={this.useStyles.root}>
+            <div className={classes.root}>
                 {this.images.map((image) => (
                 <Button
                     focusRipple
                     key={image.title}
-                    className={this.useStyles.image}
-                    focusVisibleClassName={this.useStyles.focusVisible}
+                    className={classes.image}
+                    focusVisibleClassName={classes.focusVisible}
                     href={`/category/${image.title}`}
                     style={{
                     width: image.width,
                     }}
                 >
                 <span
-                    className={this.useStyles.imageSrc}
+                    className={classes.imageSrc}
                     style={{
                         backgroundImage: `url(${image.url})`,
                     }}
                 >
                 </span>
-                <span className={this.useStyles.imageBackdrop} />
-                <span className={this.useStyles.imageButton}>
+                <span className={classes.imageBackdrop} />
+                <span className={classes.imageButton}>
                     <Typography
                         component="span"
                         variant="subtitle1"
                         color="inherit"
-                        className={this.useStyles.imageTitle}
+                        className={classes.imageTitle}
                     >
                         {image.title}
-                        <span className={this.useStyles.imageMarked} />
+                        <span className={classes.imageMarked} />
                     </Typography>
                 </span>
                 
