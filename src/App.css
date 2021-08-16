@@ -2,6 +2,10 @@
   margin: auto;
   color: white;
 }
+.text-center2 {
+  margin-left: 550px;
+  color: white;
+}
 
 .btn-size {
   position: relative;
@@ -11,6 +15,18 @@
   margin-right: 20px;
 }
 
+.bodycontainer {
+  width: 100%;
+  min-height: 95vh;
+}
+
+.btn-custom {
+  text-align: center;
+}
+
+.btn-custom2 {
+  width: 100px;
+}
 
 .footer-background {
   background-color: rgba(0, 0, 0, 0.2);
@@ -23,28 +39,116 @@
   width: 100%;
 }
 
-.custom {
-  background-color: #FFF;
-  height:200px;
-  border: 1px solid;
-}
-
-.custom img{
-  margin-left: -13px;
-}
-
-.customHeight{
-height:200px;
-margin-top: 10px;
-}
-
 .col-sm-8 {
   border-width: 1px 1px 1px 0px;
   border-style: solid;
 }
 
-.under{
-  position:relative;
-  left:660px;
-  top:100px;
+.under {
+  position: relative;
+  left: 660px;
+  top: 100px;
+}
+
+.wrap_thumb {
+  float: right;
+}
+
+.thumb_g {
+  position: relative;
+  float: right;
+}
+
+.img_thumb {
+  text-align: end;
+  margin-top: 32px;
+  margin-bottom: 18px;
+}
+
+.li-custom {
+  margin-top: 20px;
+  list-style: none;
+  height: 170px;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.screen_out {
+  display: none;
+}
+
+.wrap-cont {
+  width: 80%;
+  height: 154px;
+  padding: 5px 0 0;
+  bottom: 150px;
+}
+
+.wrap_data {
+  float: left;
+  width: 154px;
+}
+
+.desc_tit {
+  width: 80%;
+  bottom: 150px;
+  left: 100px;
+  color: #909090;
+}
+.a-color {
+  text-decoration: none;
+}
+
+a {
+  cursor: pointer;
+}
+
+dd,
+dt {
+  display: block;
+  color: #333;
+}
+
+.inner_data {
+  color: #909090;
+}
+
+.desc_g {
+  color: #000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 722px;
+  font-size: 14px;
+  height: 44px;
+}
+
+.inner_desc_tit {
+  max-width: 516px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 30px;
+  font-size: 22px;
+  color: #000;
+  font-weight: normal;
+}
+
+.info_g {
+  margin-left: 150px;
+  margin-top: 50px;
+}
+
+.txt_id,
+.txt-date {
+  color: #000;
+}
+
+.a-icons {
+  color: #333;
+}
+
+.login-logout {
+  color: white;
 }
