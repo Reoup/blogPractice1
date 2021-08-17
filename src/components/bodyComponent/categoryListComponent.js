@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import CategoryBoardsAPI from '../../utils/api';
+import BlogService from '../../utils/BlogService';
 import moment from 'moment';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import HomeIcon from '@material-ui/icons/Home';
+import camera from '../../images/camera.jpg';
+import food from '../../images/food.jpg';
+import IT from '../../images/IT.jpg';
+import sports from '../../images/sports.jpg';
+import travel from '../../images/travel.jpg';
+import profile from '../../images/profile.jpg';
 
-const UseStyles = makeStyles((theme) => ({
+
+const useStyles = (theme) => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -22,13 +30,13 @@ const UseStyles = makeStyles((theme) => ({
         '&:hover, &$focusVisible': {
             zIndex: 1,
             '& $imageBackdrop': {
-            opacity: 0.15,
+                opacity: 0.15,
             },
             '& $imageMarked': {
-            opacity: 0,
+                opacity: 0,
             },
             '& $imageTitle': {
-            border: '4px solid currentColor',
+                border: '4px solid currentColor',
             },
         },
     },
@@ -76,7 +84,8 @@ const UseStyles = makeStyles((theme) => ({
         left: 'calc(50% - 9px)',
         transition: theme.transitions.create('opacity'),
     },
-}));
+});
+
 
 class CategoryListComponent extends Component {
     images = [
@@ -108,105 +117,238 @@ class CategoryListComponent extends Component {
     ];
 
 
-    
-    constructor(props){
+
+    constructor(props) {
         super(props);
 
         this.state = {
+            p_num: 1,
+            paging: {},
             category: props.match.params.category,
-            categoryBoards: []
+            categoryBoards: [],
+            button: '로그인',
+            loginName: '로그인을 해주세요'
         };
     }
 
     _dataFormat(data, format) {
         return moment(new Date(data)).format(format);
     }
-    
+
     initialRegistrationTime = (cTime) => {
-        if(!cTime) return;
+        if (!cTime) return;
         return cTime ? this._dataFormat(cTime, 'YYYY-MM-DD') : '-';
     }
 
     componentDidMount() {
-        CategoryBoardsAPI.getCategoryBoards(this.state.category).then((res) => {
-            this.setState({categoryBoards: res.data});
+        BlogService.getCategoryBoards(this.state.category, this.state.p_num).then((res) => {
+            this.setState({
+                p_num: res.data.pageNum,
+                paging: res.data,
+                categoryBoards: res.data.list
+            });
         });
     }
 
-    readBoard(name,idx) { // 글을 클릭 했을 때 글 상세보기 페이지로 이동하게 해주는 함수를 정의한 것
-        this.props.history.push(`/${name}/${idx}`);
+    personBlogChangeHandler(name, idx) { // 글을 클릭 했을 때 글 상세보기 페이지로 이동하게 해주는 함수를 정의한 것
+        BlogService.BlogBoardsHitUp(idx).then(res => {
+        }).then(this.props.history.push(`/${name}/${idx}`))
+
     }
 
+    buttonName = (event) => {
+        if (event === '로그인') {
+            this.setState({
+                loginName: '',
+                button: '로그아웃'
+            });
+        }
+        else {
+            this.setState({
+                loginName: '로그인을 해주세요',
+                button: '로그인'
+            });
+        }
+    }
+
+    listBoard(p_num) {
+        console.log("pageNum : " + p_num);
+        BlogService.getCategoryBoards(this.state.category, p_num).then((res) => {
+            console.log(res);
+            this.setState({
+                p_num: res.data.pageNum,
+                paging: res.data,
+                categoryBoards: res.data.list
+            });
+        });
+    }
+
+    viewPaging() {
+        const pageNums = [];
+
+        for (let i = this.state.paging.navigateFirstPage; i <= this.state.paging.navigateLastPage; i++) {
+            pageNums.push(i);
+        }
+
+        return (pageNums.map((page) =>
+            <li className="page-item" key={page.toString()} >
+                <a className="page-link" onClick={() => this.listBoard(page)}>{page}</a>
+            </li>
+        ));
+    }
+
+    isPagingPrev() {
+        if (this.state.paging.prePage) {
+            return (
+                <li className="page-item">
+                    <a className="page-link" onClick={() => this.listBoard((this.state.paging.pageNum - 1))} tabIndex="-1">Previous</a>
+                </li>
+            );
+        }
+    }
+
+    isPagingNext() {
+        if (this.state.paging.nextPage) {
+            return (
+                <li className="page-item">
+                    <a className="page-link" onClick={() => this.listBoard((this.state.paging.pageNum + 1))} tabIndex="-1">Next</a>
+                </li>
+            );
+        }
+    }
+
+    isMoveToFirstPage() {
+        if (this.state.p_num != 1) {
+            return (
+                <li className="page-item">
+                    <a className="page-link" onClick={() => this.listBoard(1)} tabIndex="-1">Move to First Page</a>
+                </li>
+            );
+        }
+    }
+
+    isMoveToLastPage() {
+        if (this.state.p_num != this.state.paging.pages) {
+            return (
+                <li className="page-item">
+                    <a className="page-link" onClick={() => this.listBoard((this.state.paging.pages))} tabIndex="-1">LastPage({this.state.paging.pages})</a>
+                </li>
+            );
+        }
+    }
 
     render() {
-        if(!this.state.categoryBoards.length)
+        if (!this.state.categoryBoards.length)
             return <div></div>
-            
-        const {classes} = this.props;
-        console.log(classes);
+
+        const { classes } = this.props;
 
         return (
-            <div className={classes.root}>
-                {this.images.map((image) => (
-                <Button
-                    focusRipple
-                    key={image.title}
-                    className={classes.image}
-                    focusVisibleClassName={classes.focusVisible}
-                    href={`/category/${image.title}`}
-                    style={{
-                    width: image.width,
-                    }}
-                >
-                <span
-                    className={classes.imageSrc}
-                    style={{
-                        backgroundImage: `url(${image.url})`,
-                    }}
-                >
-                </span>
-                <span className={classes.imageBackdrop} />
-                <span className={classes.imageButton}>
-                    <Typography
-                        component="span"
-                        variant="subtitle1"
-                        color="inherit"
-                        className={classes.imageTitle}
-                    >
-                        {image.title}
-                        <span className={classes.imageMarked} />
-                    </Typography>
-                </span>
-                
-                </Button>
-                ))}
+            <div>
+                <header>
+                    <nav className="navbar navbar-expand-md navbar-dark bg-dark bg-dark">
+                        <div>
+                            <a href="http://localhost:3000" className="navbar-brand">Blog 연습중</a>
+                        </div>
+                        <h2 className="text-center">{this.state.loginName}</h2>
+                        <button className="btn btn-info btn-custom2" onClick={() => { this.buttonName(this.state.button) }}>{this.state.button}</button>
+                    </nav>
+                </header>
+                <div className={classes.root}>
+                    {this.images.map((image) => (
+                        <Button
+                            focusRipple
+                            key={image.title}
+                            className={classes.image}
+                            focusVisibleClassName={classes.focusVisible}
+                            href={`/category/${image.title}`}
+                            style={{
+                                width: image.width,
+                            }}
+                        >
+                            <span
+                                className={classes.imageSrc}
+                                style={{
+                                    backgroundImage: `url(${image.url})`,
+                                }}
+                            >
+                            </span>
+                            <span className={classes.imageBackdrop} />
+                            <span className={classes.imageButton}>
+                                <Typography
+                                    component="span"
+                                    variant="subtitle1"
+                                    color="inherit"
+                                    className={classes.imageTitle}
+                                >
+                                    {image.title}
+                                    <span className={classes.imageMarked} />
+                                </Typography>
+                            </span>
+
+                        </Button>
+                    ))}
+                    <ul className="container">
+                        {this.state.categoryBoards.map(
+                            categoryBoards =>
+                                <li className="li-custom" key={categoryBoards.idx}>
+                                    <a target="_blank" onClick={() => { this.personBlogChangeHandler(categoryBoards.name, categoryBoards.idx) }} className="a-color">
+                                        <div className="img_thumb"><img src={categoryBoards.img_url} width="128" height="128" className="thumb_g" alt="왜 안떠?" /></div>
+                                        <div className="wrap-cont">
+                                            <div className="wrap_data">
+                                                <dl className="list_data">
+                                                    <dt className="screen_out">카테고리</dt>
+                                                    <dd className="txt_cate txt_cate_type1">
+                                                        <span className="inner_data">{categoryBoards.category}</span>
+                                                    </dd>
+                                                </dl>
+                                                <dl className="list_data">
+                                                    <dt className="screen_out">게시된 시간</dt>
+                                                    <dd>{this.initialRegistrationTime(categoryBoards.reg_dt)}</dd>
+                                                </dl>
+                                                <dl className="list_data">
+                                                    <dt>조회수</dt>
+                                                    <dd className="num_cmt">{categoryBoards.hit}</dd>
+                                                </dl>
+                                            </div>
+                                            <strong className="desc_tit">
+                                                <span className="inner_desc_tit">{categoryBoards.title}</span>
+                                            </strong>
+                                            <p className="desc_g">{categoryBoards.content}</p>
+                                            <div className="info_g">
+                                                <HomeIcon className="a-icons" />
+                                                <span className="txt_id">{categoryBoards.name}의 테크 블로그</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                        )}
+                    </ul>
+                </div>
+                <div className="row">
+                    <nav aria-label="Page navigation example">
+                        <ul className="pagination justify-content-center">
+                            {
+                                this.isMoveToFirstPage()
+                            }
+                            {
+                                this.isPagingPrev()
+                            }
+                            {
+                                this.viewPaging()
+                            }
+                            {
+                                this.isPagingNext()
+                            }
+                            {
+                                this.isMoveToLastPage()
+                            }
+                        </ul>
+                    </nav>
+                </div>
             </div>
-            // {this.state.categoryBoards.map(
-            //     categoryBoards =>
-            //     <div className='customHeight'
-            //     key ={categoryBoards.idx}
-            //     onClick = {() => {this.readBoard(categoryBoards.name, categoryBoards.idx)}}>
-            //     <div className='row'>
-            //         <div className='col-sm-2 custom'>
-            //             <img src={categoryBoards.img_url}
-            //             width='220px'
-            //             height='100%'
-            //             alt='testA'/>
-            //         </div>
-            //         <div className='col-sm-8'>
-            //             <div className=' '>
-            //             <h3>{categoryBoards.title}</h3>
-            //             </div>
-            //             <div className="bottomGap">{categoryBoards.content}</div>
-            //             <div className="under">작성자: {categoryBoards.name}  조회수: {categoryBoards.hit}</div>
-            //         </div>    
-            //     </div>
-            // </div>
-            // )}
-
-
         );
     }
 }
 
-export default CategoryListComponent;
+export default withStyles(useStyles)(CategoryListComponent);
