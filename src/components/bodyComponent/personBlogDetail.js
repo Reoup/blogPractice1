@@ -24,12 +24,6 @@ class PersonBlogComponent extends Component {
                 console.log(res);
                 this.setState({ PersonBlogDetail: res.data });
             });
-
-        BlogService.getPersonBlogCategory(this.state.name)
-            .then(res => {
-                console.log(res);
-                this.setState({ PersonBlogCategory: res.data });
-            })
     }
 
 
