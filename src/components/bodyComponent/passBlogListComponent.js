@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class passBlogListComponent extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }

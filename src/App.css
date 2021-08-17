@@ -3,7 +3,8 @@
   color: white;
 }
 .text-center2 {
-  margin-left: 550px;
+  width: 86%;
+  text-align: center;
   color: white;
 }
 
@@ -151,4 +152,85 @@ dt {
 
 .login-logout {
   color: white;
+}
+
+.cards{
+  border:1px solid;
+}
+
+.card-width{
+  width:15em;
+}
+
+.card-body{
+  border-top: 1px solid;
+}
+
+.post-width{
+  max-width:100%;
+  display: inline-block;
+}
+
+.a-icons-margin{
+  margin-right: 10px;
+}
+
+.box{
+  width: 15em;
+  height: 15em;
+  border-radius: 70%;
+  overflow: hidden;
+}
+
+.profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.title-width{
+  width:65%;
+  margin-left: 300px;
+  margin-top: -20px;
+}
+
+.title{
+  min-height: 22px;
+  font-weight: lighter ;
+  background-color: #000;
+}
+
+.title-position{
+  color:white;
+  margin-left: 10px;
+  margin-right: 20px;
+  font-size: 38px;
+  font-weight: bold;
+  overflow: hidden;
+  max-width: 1256px;
+  min-height: 22px;
+}
+
+.content-body{
+  margin-left: 20px;
+  width: 90%;
+  min-height: 40vh;
+}
+
+.content-footer{
+  text-align: left;
+  min-height: 0vh;
+}
+
+.text{
+  text-align: right;
+}
+
+.category{
+  display: inline-block;
+  position: absolute;
+  width:200px;
+  min-height: 40vh;
+  margin-top: 10px;
+  border: 1px solid;
 }
