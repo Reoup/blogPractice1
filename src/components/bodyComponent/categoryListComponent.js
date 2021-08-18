@@ -151,13 +151,16 @@ class CategoryListComponent extends Component {
     }
 
     personBlogChangeHandler(name, idx) { // 글을 클릭 했을 때 글 상세보기 페이지로 이동하게 해주는 함수를 정의한 것
-        BlogService.BlogBoardsHitUp(idx).then(res => {
-        }).then(this.props.history.push(`/${name}/${idx}`))
+        BlogService.BlogBoardsHitUp(idx)
+            .then(res => {
+            })
+            .then(this.props.history.push(`/${name}/${idx}`))
 
     }
 
     buttonName = (event) => {
         if (event === '로그인') {
+            this.props.history.push('/login');
             this.setState({
                 loginName: '',
                 button: '로그아웃'
@@ -172,15 +175,15 @@ class CategoryListComponent extends Component {
     }
 
     listBoard(p_num) {
-        console.log("pageNum : " + p_num);
-        BlogService.getCategoryBoards(this.state.category, p_num).then((res) => {
-            console.log(res);
-            this.setState({
-                p_num: res.data.pageNum,
-                paging: res.data,
-                categoryBoards: res.data.list
+        if (p_num !== this.state.p_num)
+            BlogService.getCategoryBoards(this.state.category, p_num).then((res) => {
+                console.log(res);
+                this.setState({
+                    p_num: res.data.pageNum,
+                    paging: res.data,
+                    categoryBoards: res.data.list
+                });
             });
-        });
     }
 
     viewPaging() {
@@ -205,6 +208,13 @@ class CategoryListComponent extends Component {
                 </li>
             );
         }
+        else {
+            return (
+                <li className="page-item">
+                    <a href="javascript:void(0)" className="page-link" tabIndex="-1">Previous</a>
+                </li>
+            );
+        }
     }
 
     isPagingNext() {
@@ -212,6 +222,13 @@ class CategoryListComponent extends Component {
             return (
                 <li className="page-item">
                     <a className="page-link" onClick={() => this.listBoard((this.state.paging.pageNum + 1))} tabIndex="-1">Next</a>
+                </li>
+            );
+        }
+        else {
+            return (
+                <li className="page-item">
+                    <a href="javascript:void(0)" className="page-link" tabIndex="-1">Next</a>
                 </li>
             );
         }
@@ -225,6 +242,13 @@ class CategoryListComponent extends Component {
                 </li>
             );
         }
+        else {
+            return (
+                <li className="page-item">
+                    <a href="javascript:void(0)" className="page-link" tabIndex="-1">Move to First Page</a>
+                </li>
+            );
+        }
     }
 
     isMoveToLastPage() {
@@ -232,6 +256,13 @@ class CategoryListComponent extends Component {
             return (
                 <li className="page-item">
                     <a className="page-link" onClick={() => this.listBoard((this.state.paging.pages))} tabIndex="-1">LastPage({this.state.paging.pages})</a>
+                </li>
+            );
+        }
+        else {
+            return (
+                <li className="page-item">
+                    <a href="javascript:void(0)" className="page-link" tabIndex="-1">LastPage({this.state.paging.pages})</a>
                 </li>
             );
         }

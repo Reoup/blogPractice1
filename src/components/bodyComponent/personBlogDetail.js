@@ -26,8 +26,6 @@ class PersonBlogComponent extends Component {
             });
     }
 
-
-
     render() {
         return (
             <div>
@@ -53,6 +51,7 @@ class PersonBlogComponent extends Component {
                             <a href="https://github.com/reoup" className="a-icons-margin"><GitHubIcon fontSize="medium" className="a-icons" /></a>
                             <a href="https://instagram.com" className="a-icons-margin"><InstagramIcon fontSize="medium" className="a-icons" /></a>
                             <a href="https://facebook.com" className="a-icons-margin"><FacebookIcon fontSize="medium" className="a-icons" /></a>
+                            <Button style={{ "border": "1px solid" }}>글쓰기</Button>
                         </div>
                     </div>
                 </div>
